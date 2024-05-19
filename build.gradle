@@ -10,10 +10,6 @@ def ENV = System.getenv()
 group = 'dev.upcraft'
 version = ENV.BUILD_TIME ?: "${new Date().format('yyyyMMddHHmmss')}-development"
 
-base {
-    archivesName.set('Axiom-Patcher')
-}
-
 println("Configuring ${project.name} ${version}")
 
 javafx {

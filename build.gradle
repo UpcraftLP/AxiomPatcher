@@ -12,8 +12,9 @@ version = ENV.BUILD_TIME ?: "${new Date().format('yyyyMMddHHmmss')}-development"
 
 println("Configuring ${project.name} ${version}")
 
+def javaFxVersion = '21.0.3'
 javafx {
-    version = '21.0.3'
+    version = javaFxVersion
     modules = [
             'javafx.controls',
             'javafx.fxml',
@@ -58,6 +59,9 @@ repositories {
 dependencies {
     implementation 'com.google.code.gson:gson:2.10.1'
     implementation 'com.unascribed:flexver-java:1.1.1'
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:linux"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:win"
+    runtimeOnly "org.openjfx:javafx-graphics:${javaFxVersion}:mac"
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'

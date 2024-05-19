@@ -49,9 +49,9 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main' && github.repository == 'UpcraftLP/AxiomPatcher'
         uses: softprops/action-gh-release@69320dbe05506a9a39fc8ae11030b214ec2d1f87 # v2.0.5
         with:
+          # no wildcard here to prevent uploading the -slim jar to release assets
           files: |
-            build/libs/*.jar
-            !build/libs/*-slim.jar
+            build/libs/AxiomPatcher-${{ steps.setup.outputs.BUILD_TIME }}.jar
           tag_name: ${{ steps.setup.outputs.BUILD_TIME }}
           name: ${{ steps.setup.outputs.BUILD_TIME }}
           generate_release_notes: true

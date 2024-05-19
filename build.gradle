@@ -1,0 +1,91 @@
+plugins {
+    id 'maven-publish'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+def ENV = System.getenv()
+
+group = 'dev.upcraft'
+version = ENV.BUILD_TIME ?: "${new Date().format('yyyyMMddHHmmss')}-development"
+
+base {
+    archivesName.set('Axiom-Patcher')
+}
+
+println("Configuring ${project.name} ${version}")
+
+javafx {
+    version = '21.0.3'
+    modules = [
+            'javafx.controls',
+            'javafx.fxml',
+    ]
+}
+
+mainClassName = 'dev.upcraft.axiompatcher.Main'
+application {
+    mainClass.set(mainClassName)
+}
+
+jar {
+    archiveClassifier.set('slim')
+    manifest {
+        attributes(
+                'Main-Class': mainClassName,
+                'Implementation-Title': project.name,
+                'Implementation-Version': project.version
+        )
+    }
+}
+
+shadowJar {
+    archiveClassifier.set('')
+}
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
+repositories {
+    mavenCentral()
+
+    maven {
+        name = 'SleepingTown'
+        url = 'https://repo.sleeping.town'
+    }
+}
+
+dependencies {
+    implementation 'com.google.code.gson:gson:2.10.1'
+    implementation 'com.unascribed:flexver-java:1.1.1'
+
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        if (ENV.MAVEN_UPLOAD_URL) {
+            maven {
+                url = ENV.MAVEN_UPLOAD_URL
+                credentials {
+                    username = ENV.MAVEN_UPLOAD_USERNAME
+                    password = ENV.MAVEN_UPLOAD_PASSWORD
+                }
+            }
+        }
+    }
+}

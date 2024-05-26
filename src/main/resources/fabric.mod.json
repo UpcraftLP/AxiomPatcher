@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "id": "axiom-patcher",
+  "name": "Axiom Patcher",
+  "version": "${version}",
+  "authors": [
+    "Up"
+  ],
+  "entrypoints": {
+    "preLaunch": [
+      "dev.upcraft.axiompatcher.LauncherMain::notAMinecraftMod"
+    ]
+  }
+}
